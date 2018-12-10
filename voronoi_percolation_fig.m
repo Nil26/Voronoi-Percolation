@@ -1,6 +1,6 @@
 clear;clc;
 
-N = 64;
+N = 16;
 
 x = gallery('uniformdata',[1 N],0);
 y = gallery('uniformdata',[1 N],1);
@@ -36,7 +36,7 @@ p1 = [vx(1,:);vy(1,:)];     % columns are "from" points
 p2 = [vx(2,:);vy(2,:)];     % columns are "to" points
 
 % use probability p
-p = 0.8;
+p = 0.2;
 
 [vx_new,vy_new] = random_sample(p,p1,p2);
 
@@ -46,7 +46,7 @@ axis equal;
 xlim([-bound_x 3*bound_x]);
 ylim([-bound_y 3*bound_y]);
 hold on;
-rectangle('Position',[0,0,max(x)-min(x),max(x)-min(x)],...
+rectangle('Position',[0,0,1,1],...
          'LineWidth',2,'LineStyle','--','EdgeColor','r');
 
 axis off;
