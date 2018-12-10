@@ -1,7 +1,7 @@
 clc;clear;
 
-res = load('delaunay.txt');
-N_many = [32,42,48,64];
+res = load('voronoi_diff_network.txt');
+N_many = [32,42,48,64,128,256];
 pav_f = [];
 Delta = [];
 
@@ -24,6 +24,8 @@ figure;
 loglog(L,Delta,'^');
 hold on;
 loglog(L,yv_fit);
+xlabel('L');
+ylabel('\Delta');
 
 % from the exponent v we got to find p_c
 x = L.^(-1/v);
@@ -35,4 +37,5 @@ figure;
 plot(x,pav_f,'o');
 hold on;
 plot(xfit,ypc_fit);
-%xlim([0 max(x)]);
+xlabel('L^{-1/\nu}');
+ylabel('p_{av}');
