@@ -1,9 +1,29 @@
-clc;clear;
+%clc;clear;
 rng('shuffle');
 
 % 32 42 48 64
-for N = [64]
+for N = [32]
 percolation_system_size(N);
+end
+
+% single_test();
+
+function single_test()
+
+x = gallery('uniformdata',[1 N],0);
+y = gallery('uniformdata',[1 N],1);
+
+X_init = [x;y];
+
+x_p = [x-1,x-1,x-1,x,x,x,x+1,x+1,x+1];
+y_p = [y-1,y,y+1,y-1,y,y+1,y-1,y,y+1];
+
+X = [x_p;y_p];
+
+p = 1;
+vn = voronoi_neighbors(X',p);
+vG = graph(full(vn));
+[labels,~] = conncomp(vG);
 end
 
 function percolation_system_size(N)
@@ -55,7 +75,7 @@ end
 
 end
 
-printf(fileID,fmt,[N p]);
+%fprintf(fileID,fmt,[N p]);
 
 % draw_graph(vG,X,x,y,labels);
 % title(sprintf("p = %.5f",p));

@@ -1,11 +1,64 @@
-clear;clc;
+%clear;clc;
 rng('shuffle');
 
 % for voronoi
 
+% single_test();
+
 % 32 42 48 64
-for N = [256]
+for N = [32]
 percolation_system_size(N);
+end
+
+function single_test()
+
+
+% start from p0 to find the first time of p to reach percolation
+p = 1;
+
+x = gallery('uniformdata',[1 N],0);
+y = gallery('uniformdata',[1 N],1);
+
+x_p = [x-1,x-1,x-1,x,x,x,x+1,x+1,x+1];
+y_p = [y-1,y,y+1,y-1,y,y+1,y-1,y,y+1];
+
+[vx,vy] = voronoi(x_p,y_p);
+
+p1 = [vx(1,:);vy(1,:)];     % columns are "from" points
+p2 = [vx(2,:);vy(2,:)];     % columns are "to" points
+
+%[vx_new,vy_new] = site_percolation(p,p1,p2);
+% for bond percolation
+vx_new = vx;
+vy_new = vy;
+
+p1_new = [vx_new(1,:);vy_new(1,:)];     % columns are "from" points
+p2_new = [vx_new(2,:);vy_new(2,:)];     % columns are "to" points
+
+all_vertices = union(p1_new',p2_new','rows')';
+% hold on;
+% plot(all_vertices(1,:),all_vertices(2,:),'^','MarkerSize',10);
+
+% the adjacency matrix
+n_vertices = size(all_vertices,2);
+vn = zeros(n_vertices,n_vertices);
+
+n_bonds = size(vx_new,2);
+for e = 1:n_bonds
+    pi = [vx_new(1,e);vy_new(1,e)];
+    pj = [vx_new(2,e);vy_new(2,e)];
+    [~,i_index] = ismember(pi',all_vertices','rows');
+    [~,j_index] = ismember(pj',all_vertices','rows');
+    if(rand < p)
+    vn(i_index,j_index) = 1;
+    vn(j_index,i_index) = 1;
+    end
+end
+
+% build the graph and find components
+vG=graph(vn);
+[labels,~] = conncomp(vG);
+
 end
 
 function percolation_system_size(N)
@@ -90,7 +143,7 @@ end
 
 end
 
-fprintf(fileID,fmt,[N p]);
+%fprintf(fileID,fmt,[N p]);
 
 % plotting_all(x,y,vx_new,vy_new,vG,labels,all_vertices);
 % title(sprintf("p = %.5f",p));
