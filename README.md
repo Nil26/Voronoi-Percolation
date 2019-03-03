@@ -1,3 +1,3 @@
 # Voronoi-Percolation
 
-Code for percolation on voronoi (and delaunay) networks
+Code for MC simulations to find percolation thresholds on voronoi (and delaunay) networks
